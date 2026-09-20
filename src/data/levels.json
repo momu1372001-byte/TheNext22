@@ -1,0 +1,37 @@
+[
+  {
+    "code": "A1",
+    "nameAr": "المبتدئ",
+    "nameEn": "Beginner",
+    "descriptionAr": "كلمات أساسية للحياة اليومية والمحادثات البسيطة",
+    "color": "#34D399"
+  },
+  {
+    "code": "A2",
+    "nameAr": "ما قبل المتوسط",
+    "nameEn": "Elementary",
+    "descriptionAr": "مفردات أوسع للتعبير عن الاحتياجات والروتين",
+    "color": "#22D3EE"
+  },
+  {
+    "code": "B1",
+    "nameAr": "المتوسط",
+    "nameEn": "Intermediate",
+    "descriptionAr": "كلمات للمحادثات والنصوص العامة",
+    "color": "#F59E0B"
+  },
+  {
+    "code": "B2",
+    "nameAr": "فوق المتوسط",
+    "nameEn": "Upper-Intermediate",
+    "descriptionAr": "مفردات للنقاشات والمواضيع المعقدة",
+    "color": "#FB923C"
+  },
+  {
+    "code": "C1",
+    "nameAr": "المتقدم",
+    "nameEn": "Advanced",
+    "descriptionAr": "كلمات متخصصة للتعبير الدقيق والطلاقة",
+    "color": "#F87171"
+  }
+]

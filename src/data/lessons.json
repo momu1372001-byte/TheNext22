@@ -1,0 +1,102 @@
+[
+  {
+    "id": "a1-everyday-1",
+    "level": "A1",
+    "category": "everyday",
+    "titleAr": "كلمات أساسية",
+    "titleEn": "Everyday Basics",
+    "descriptionAr": "أشهر الكلمات المستخدمة في الحياة اليومية",
+    "order": 1,
+    "wordIds": ["a1-001", "a1-002", "a1-003", "a1-004", "a1-005", "a1-006", "a1-007", "a1-008"]
+  },
+  {
+    "id": "a1-food-1",
+    "level": "A1",
+    "category": "food",
+    "titleAr": "الطعام والشراب",
+    "titleEn": "Food & Drink",
+    "descriptionAr": "مفردات أساسية عن الطعام والشراب",
+    "order": 2,
+    "wordIds": ["a1-009", "a1-010", "a1-011", "a1-012", "a1-013", "a1-014", "a1-015", "a1-016"]
+  },
+  {
+    "id": "a2-travel-1",
+    "level": "A2",
+    "category": "travel",
+    "titleAr": "السفر والمواصلات",
+    "titleEn": "Travel & Transport",
+    "descriptionAr": "كلمات للتنقل والسفر",
+    "order": 1,
+    "wordIds": ["a2-001", "a2-002", "a2-003", "a2-004", "a2-005", "a2-006", "a2-007", "a2-008"]
+  },
+  {
+    "id": "a2-work-1",
+    "level": "A2",
+    "category": "work",
+    "titleAr": "العمل والمهنة",
+    "titleEn": "Work & Jobs",
+    "descriptionAr": "مفردات عن العمل والوظائف",
+    "order": 2,
+    "wordIds": ["a2-009", "a2-010", "a2-011", "a2-012", "a2-013", "a2-014", "a2-015", "a2-016"]
+  },
+  {
+    "id": "b1-emotions-1",
+    "level": "B1",
+    "category": "emotions",
+    "titleAr": "المشاعر والعلاقات",
+    "titleEn": "Emotions & Relationships",
+    "descriptionAr": "كلمات للتعبير عن المشاعر والعلاقات",
+    "order": 1,
+    "wordIds": ["b1-001", "b1-002", "b1-003", "b1-004", "b1-005", "b1-006", "b1-007", "b1-008"]
+  },
+  {
+    "id": "b1-education-1",
+    "level": "B1",
+    "category": "education",
+    "titleAr": "التعليم والدراسة",
+    "titleEn": "Education & Study",
+    "descriptionAr": "مفردات للبيئة الأكاديمية والتعليم",
+    "order": 2,
+    "wordIds": ["b1-009", "b1-010", "b1-011", "b1-012", "b1-013", "b1-014", "b1-015", "b1-016"]
+  },
+  {
+    "id": "b2-society-1",
+    "level": "B2",
+    "category": "society",
+    "titleAr": "المجتمع والثقافة",
+    "titleEn": "Society & Culture",
+    "descriptionAr": "كلمات للنقاشات الاجتماعية والثقافية",
+    "order": 1,
+    "wordIds": ["b2-001", "b2-002", "b2-003", "b2-004", "b2-005", "b2-006", "b2-007", "b2-008"]
+  },
+  {
+    "id": "b2-nature-1",
+    "level": "B2",
+    "category": "nature",
+    "titleAr": "الطبيعة والبيئة",
+    "titleEn": "Nature & Environment",
+    "descriptionAr": "مفردات حول البيئة والطبيعة",
+    "order": 2,
+    "wordIds": ["b2-009", "b2-010", "b2-011", "b2-012", "b2-013", "b2-014", "b2-015", "b2-016"]
+  },
+  {
+    "id": "c1-technology-1",
+    "level": "C1",
+    "category": "technology",
+    "titleAr": "التقنية والابتكار",
+    "titleEn": "Technology & Innovation",
+    "descriptionAr": "مفردات متقدمة في التقنية والعلوم",
+    "order": 1,
+    "wordIds": ["c1-001", "c1-002", "c1-003", "c1-004", "c1-005", "c1-006", "c1-007", "c1-008"]
+  },
+  {
+    "id": "c1-health-1",
+    "level": "C1",
+    "category": "health",
+    "titleAr": "الصحة والطب",
+    "titleEn": "Health & Medicine",
+    "descriptionAr": "مفردات متقدمة في الصحة والطب",
+    "order": 2,
+    "wordIds": ["c1-009", "c1-010", "c1-011", "c1-012", "c1-013", "c1-014", "c1-015", "c1-016"]
+  }
+]

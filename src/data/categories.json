@@ -1,0 +1,62 @@
+[
+  {
+    "id": "everyday",
+    "nameAr": "الحياة اليومية",
+    "nameEn": "Everyday Life",
+    "icon": "Home"
+  },
+  {
+    "id": "food",
+    "nameAr": "الطعام والشراب",
+    "nameEn": "Food & Drink",
+    "icon": "UtensilsCrossed"
+  },
+  {
+    "id": "travel",
+    "nameAr": "السفر والمواصلات",
+    "nameEn": "Travel & Transport",
+    "icon": "Plane"
+  },
+  {
+    "id": "work",
+    "nameAr": "العمل والمهنة",
+    "nameEn": "Work & Career",
+    "icon": "Briefcase"
+  },
+  {
+    "id": "education",
+    "nameAr": "التعليم والدراسة",
+    "nameEn": "Education & Study",
+    "icon": "GraduationCap"
+  },
+  {
+    "id": "emotions",
+    "nameAr": "المشاعر والعلاقات",
+    "nameEn": "Emotions & Relationships",
+    "icon": "Heart"
+  },
+  {
+    "id": "nature",
+    "nameAr": "الطبيعة والبيئة",
+    "nameEn": "Nature & Environment",
+    "icon": "Trees"
+  },
+  {
+    "id": "technology",
+    "nameAr": "التقنية والعلوم",
+    "nameEn": "Technology & Science",
+    "icon": "Cpu"
+  },
+  {
+    "id": "health",
+    "nameAr": "الصحة والجسم",
+    "nameEn": "Health & Body",
+    "icon": "Activity"
+  },
+  {
+    "id": "society",
+    "nameAr": "المجتمع والثقافة",
+    "nameEn": "Society & Culture",
+    "icon": "Users"
+  }
+]
