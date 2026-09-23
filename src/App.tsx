@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { PhoneFrame, TabBar } from '@/components/ui';
 import { loadProfile, saveProfile, updateProfile, clearProfile } from '@/data/profileStore';
-import { resetProgress, subscribe } from '@/data/progressStore';
+import { resetProgress, subscribe, getReviewWords } from '@/data/progressStore';
 import type { OnboardingState, TabKey } from '@/types';
 import OnboardingScreen from '@/screens/OnboardingScreen';
 import LearnScreen from '@/screens/LearnScreen';
@@ -75,7 +75,7 @@ export default function App() {
           onOpenSettings={() => setShowSettings(true)}
         />
       )}
-      <TabBar active={activeTab} onChange={setActiveTab} />
+      <TabBar active={activeTab} onChange={setActiveTab} reviewDueCount={getReviewWords().length} />
     </PhoneFrame>
   );
 }

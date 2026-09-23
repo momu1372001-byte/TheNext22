@@ -10,6 +10,7 @@ import {
   recordDailyGoalCompleted,
   checkAndUnlockAchievements,
   type DailySession,
+  type SrsGrade,
 } from '@/data/progressStore';
 import type { LevelCode, Word } from '@/types';
 
@@ -33,8 +34,8 @@ export function DailySessionScreen({ level, dailyGoal, onBack }: DailySessionScr
   const [exercises] = useState<Exercise[]>(() => buildExercisesForWords(sessionWords, { widePool: true }));
 
   const handleAnswer = useCallback(
-    (word: Word, correct: boolean) => {
-      recordSessionWord(word.id, correct);
+    (word: Word, grade: SrsGrade) => {
+      recordSessionWord(word.id, grade);
     },
     [],
   );

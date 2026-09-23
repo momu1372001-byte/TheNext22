@@ -1,7 +1,7 @@
-import { Volume2 } from 'lucide-react';
+import { Volume2, Check, X, CalendarClock } from 'lucide-react';
 import { Card } from '@/components/ui';
 import type { Word } from '@/types';
-import type { WordStatus } from '@/data/progressStore';
+import { getWordProgress, type WordStatus } from '@/data/progressStore';
 
 type WordCardProps = {
   word: Word;
@@ -23,11 +23,29 @@ const POS_LABELS: Record<string, string> = {
 const STATUS_BADGES: Record<WordStatus, { label: string; class: string }> = {
   new: { label: 'جديد', class: 'bg-white/5 text-text-muted' },
   learning: { label: 'تعلّم', class: 'bg-primary-500/15 text-primary-500' },
-  reviewed: { label: 'مراجع', class: 'bg-success-500/15 text-success-400' },
+  review: { label: 'مراجعة', class: 'bg-accent-500/15 text-accent-400' },
+  mastered: { label: 'إتقان', class: 'bg-success-500/15 text-success-400' },
 };
 
 export function WordCard({ word, index = 0, status = 'new' }: WordCardProps) {
   const badge = STATUS_BADGES[status];
+  const progress = getWordProgress(word.id);
+
+  const formatDue = (dueDate: string | null): string | null => {
+    if (!dueDate) return null;
+    const today = new Date();
+    const todayKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    if (dueDate <= todayKey) return 'الآن';
+    const due = new Date(dueDate + 'T00:00:00');
+    const diffDays = Math.round((due.getTime() - today.getTime()) / 86400000);
+    if (diffDays === 1) return 'غداً';
+    if (diffDays < 7) return `بعد ${diffDays} أيام`;
+    if (diffDays < 30) return `بعد ${Math.round(diffDays / 7)} أسابيع`;
+    return `بعد ${Math.round(diffDays / 30)} أشهر`;
+  };
+
+  const dueLabel = formatDue(progress?.dueDate ?? null);
+  const showStats = progress && (progress.correctCount > 0 || progress.wrongCount > 0 || progress.dueDate);
 
   return (
     <Card
@@ -75,11 +93,30 @@ export function WordCard({ word, index = 0, status = 'new' }: WordCardProps) {
         <p className="text-2xs text-text-muted">{word.arabicExampleTranslation}</p>
       </div>
 
-      <div className="flex items-center gap-2 mt-3">
+      <div className="flex items-center gap-2 mt-3 flex-wrap">
         <span className="rounded-pill bg-white/5 px-2 py-0.5 text-2xs text-text-muted">
           {POS_LABELS[word.partOfSpeech] ?? word.partOfSpeech}
         </span>
         <span className="text-2xs text-text-muted ltr">صعوبة {word.difficulty}/5</span>
+        {showStats && (
+          <span className="flex items-center gap-2 mr-auto">
+            {progress!.correctCount > 0 && (
+              <span className="flex items-center gap-0.5 text-2xs text-success-400 ltr">
+                <Check size={11} />{progress!.correctCount}
+              </span>
+            )}
+            {progress!.wrongCount > 0 && (
+              <span className="flex items-center gap-0.5 text-2xs text-error-400 ltr">
+                <X size={11} />{progress!.wrongCount}
+              </span>
+            )}
+            {dueLabel && (
+              <span className="flex items-center gap-0.5 text-2xs text-text-muted">
+                <CalendarClock size={11} />{dueLabel}
+              </span>
+            )}
+          </span>
+        )}
       </div>
     </Card>
   );

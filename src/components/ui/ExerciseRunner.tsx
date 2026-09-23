@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { ChevronLeft, Check, X, Volume2, Star, Trophy, RotateCcw } from 'lucide-react';
 import { Screen, ProgressBar, Button } from '@/components/ui';
 import { getAllWords } from '@/data/vocabularyRepository';
-import { recordWordAnswer } from '@/data/progressStore';
+import { recordWordGrade, previewInterval, getWordProgress, type SrsGrade } from '@/data/progressStore';
 import type { Word } from '@/types';
 
 // ---------------------------------------------------------------------------
@@ -29,14 +29,28 @@ export type ExerciseSessionResult = {
   stars: number;
 };
 
+type GradeButton = {
+  grade: SrsGrade;
+  label: string;
+  hint: string;
+  class: string;
+};
+
+const GRADE_BUTTONS: GradeButton[] = [
+  { grade: 'again', label: 'أعد', hint: 'قريباً جداً', class: 'border-error-500/40 bg-error-500/10 text-error-400 hover:bg-error-500/20' },
+  { grade: 'hard', label: 'صعب', hint: 'فترة قصيرة', class: 'border-warning-500/40 bg-warning-500/10 text-warning-400 hover:bg-warning-500/20' },
+  { grade: 'good', label: 'جيد', hint: 'فترة طبيعية', class: 'border-primary-500/40 bg-primary-500/10 text-primary-400 hover:bg-primary-500/20' },
+  { grade: 'easy', label: 'سهل', hint: 'فترة أطول', class: 'border-success-500/40 bg-success-500/10 text-success-400 hover:bg-success-500/20' },
+];
+
 type ExerciseRunnerProps = {
   exercises: Exercise[];
   title: string;
   badge?: string;
   onBack: () => void;
   onComplete?: (result: ExerciseSessionResult) => void;
-  /** Called for every answer so external systems (session tracking) can react. */
-  onAnswer?: (word: Word, correct: boolean) => void;
+  /** Called for every graded answer so external systems (session tracking) can react. */
+  onAnswer?: (word: Word, grade: SrsGrade) => void;
   /** Hide the done screen and let the parent handle it (e.g. daily session). */
   hideDoneScreen?: boolean;
   /** Custom done screen content rendered below the score */
@@ -184,26 +198,31 @@ export function ExerciseRunner({
       } else {
         setWrongWords((w) => [...w, current.word]);
       }
-      recordWordAnswer(current.word.id, correct);
-      onAnswer?.(current.word, correct);
     },
-    [answered, current, onAnswer],
+    [answered, current],
   );
 
-  const handleContinue = useCallback(() => {
-    if (currentIdx + 1 >= exercises.length) {
-      const total = exercises.length;
-      const score = total > 0 ? Math.round((correctCount / total) * 100) : 0;
-      const stars = Math.max(1, Math.round(score / 33.3));
-      const result: ExerciseSessionResult = { total, correct: correctCount, wrongWords, score, stars };
-      onComplete?.(result);
-      if (!hideDoneScreen) setPhase('done');
-    } else {
-      setCurrentIdx((i) => i + 1);
-      setSelected(null);
-      setAnswered(false);
-    }
-  }, [currentIdx, exercises.length, correctCount, wrongWords, onComplete, hideDoneScreen]);
+  const handleGrade = useCallback(
+    (grade: SrsGrade) => {
+      if (!current || !answered) return;
+      recordWordGrade(current.word.id, grade);
+      onAnswer?.(current.word, grade);
+
+      if (currentIdx + 1 >= exercises.length) {
+        const total = exercises.length;
+        const score = total > 0 ? Math.round((correctCount / total) * 100) : 0;
+        const stars = Math.max(1, Math.round(score / 33.3));
+        const result: ExerciseSessionResult = { total, correct: correctCount, wrongWords, score, stars };
+        onComplete?.(result);
+        if (!hideDoneScreen) setPhase('done');
+      } else {
+        setCurrentIdx((i) => i + 1);
+        setSelected(null);
+        setAnswered(false);
+      }
+    },
+    [current, answered, currentIdx, exercises.length, correctCount, wrongWords, onComplete, hideDoneScreen, onAnswer],
+  );
 
   const handleRestart = useCallback(() => {
     if (onRestart) {
@@ -317,7 +336,6 @@ export function ExerciseRunner({
 
   // --- Practice phase ---
   const isCorrect = selected === current.correctAnswer;
-  const isLast = currentIdx === exercises.length - 1;
 
   return (
     <Screen scroll={false}>
@@ -461,9 +479,29 @@ export function ExerciseRunner({
               </div>
             </div>
 
-            <Button fullWidth size="lg" onClick={handleContinue}>
-              {isLast ? 'إنهاء وعرض النتيجة' : 'متابعة'}
-            </Button>
+            {/* SRS self-grade buttons — how well did you remember it? */}
+            <div>
+              <p className="text-2xs text-text-muted text-center mb-2">قيّم مدى تذكّرك للكلمة</p>
+              <div className="grid grid-cols-2 gap-2">
+                {(isCorrect
+                  ? GRADE_BUTTONS.filter((b) => b.grade !== 'again')
+                  : GRADE_BUTTONS.filter((b) => b.grade === 'again')
+                ).map((btn) => {
+                  const prevProgress = getWordProgress(current.word.id);
+                  const hint = previewInterval(prevProgress, btn.grade);
+                  return (
+                    <button
+                      key={btn.grade}
+                      onClick={() => handleGrade(btn.grade)}
+                      className={`flex flex-col items-center gap-0.5 rounded-lg border-2 p-3 transition-all duration-200 active:scale-[0.98] ${btn.class}`}
+                    >
+                      <span className="text-sm font-bold">{btn.label}</span>
+                      <span className="text-2xs opacity-80">{hint}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         )}
       </div>

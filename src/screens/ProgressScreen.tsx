@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ChartBar as BarChart3, Flame, Zap, BookOpen, CircleCheck as CheckCircle2, Loader as Loader2, TrendingUp, TrendingDown, Award, Target } from 'lucide-react';
+import { ChartBar as BarChart3, Flame, Zap, BookOpen, CircleCheck as CheckCircle2, Loader as Loader2, TrendingUp, TrendingDown, Award, Target, RotateCcw } from 'lucide-react';
 import { Screen, ScreenHeader, Card, ProgressBar } from '@/components/ui';
 import { getProgressSummary, getStrengthsAndWeaknesses, getWeakWords, subscribe, type ProgressSummary, type SkillAnalysis } from '@/data/progressStore';
 import { getLevelByCode, getAppConfig, getCategoryById } from '@/data/vocabularyRepository';
@@ -193,12 +193,27 @@ export function ProgressScreen({ profile }: ProgressScreenProps) {
             accent="bg-success-500/15 text-success-400"
           />
           <StatCard
-            icon={<Loader2 size={18} />}
+            icon={<Loader2 size={18} className="animate-spin" />}
             value={summary.inProgressCount.toLocaleString('en-US')}
             label="قيد التعلّم"
             accent="bg-accent-500/15 text-accent-400"
           />
         </div>
+
+        {/* Due for review banner */}
+        {summary.dueCount > 0 && (
+          <Card className="p-4 flex items-center gap-3 animate-fade-up border-accent-500/30">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent-500/15 text-accent-400 shrink-0">
+              <RotateCcw size={18} />
+            </span>
+            <div className="flex-1">
+              <p className="text-sm font-semibold text-text-primary">
+                {summary.dueCount} كلمة للمراجعة الآن
+              </p>
+              <p className="text-2xs text-text-muted">راجعها لتثبيتها في ذاكرتك طويلة المدى</p>
+            </div>
+          </Card>
+        )}
 
         {/* Streak + XP row */}
         <div className="grid grid-cols-2 gap-3">

@@ -18,9 +18,10 @@ const TABS: TabConfig[] = [
 type TabBarProps = {
   active: TabKey;
   onChange: (key: TabKey) => void;
+  reviewDueCount?: number;
 };
 
-export function TabBar({ active, onChange }: TabBarProps) {
+export function TabBar({ active, onChange, reviewDueCount = 0 }: TabBarProps) {
   return (
     <nav className="flex items-stretch justify-around bg-surface/95 backdrop-blur-md border-t border-border/70 shadow-tab pt-2 pb-4 px-2 shrink-0">
       {TABS.map((tab) => {
@@ -35,11 +36,16 @@ export function TabBar({ active, onChange }: TabBarProps) {
             aria-current={isActive ? 'page' : undefined}
           >
             <span
-              className={`flex items-center justify-center w-11 h-7 rounded-pill transition-all duration-200 ${
+              className={`relative flex items-center justify-center w-11 h-7 rounded-pill transition-all duration-200 ${
                 isActive ? 'bg-primary-500/15 scale-105' : 'scale-100'
               }`}
             >
               {tab.icon}
+              {tab.key === 'review' && reviewDueCount > 0 && (
+                <span className="absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent-500 px-1 text-2xs font-bold text-neutral-950 ltr">
+                  {reviewDueCount > 99 ? '99+' : reviewDueCount}
+                </span>
+              )}
             </span>
             <span className={`text-2xs font-semibold ${isActive ? 'text-primary-500' : ''}`}>
               {tab.labelAr}
