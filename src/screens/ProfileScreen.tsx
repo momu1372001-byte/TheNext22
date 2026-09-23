@@ -17,11 +17,13 @@ import {
   X,
   Award,
   Lock,
+  LogOut,
 } from 'lucide-react';
 import { Screen, ScreenHeader, Card, Button } from '@/components/ui';
 import { getProgressSummary, subscribe, type ProgressSummary } from '@/data/progressStore';
 import { getLevelByCode } from '@/data/vocabularyRepository';
 import { ACHIEVEMENTS } from '@/data/achievements';
+import { useAuth } from '@/hooks/useAuth';
 import type { OnboardingState, LevelCode, DailyGoal, Level } from '@/types';
 import levelsData from '@/data/levels.json';
 import goalsData from '@/data/goals.json';
@@ -194,9 +196,11 @@ function QuickStat({
 /* ------------------------------------------------------------------ */
 
 export function ProfileScreen({ profile, onUpdateProfile, onResetOnboarding, onOpenSettings }: ProfileScreenProps) {
+  const { user, signOut } = useAuth();
   const summary = useSummary(profile.dailyGoal || 10);
   const [sheet, setSheet] = useState<SheetMode>(null);
   const [confirmReset, setConfirmReset] = useState(false);
+  const [confirmLogout, setConfirmLogout] = useState(false);
 
   const currentLevel = getLevelByCode(profile.level ?? 'A1');
 
@@ -249,7 +253,9 @@ export function ProfileScreen({ profile, onUpdateProfile, onResetOnboarding, onO
               </span>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-lg font-bold text-text-primary">متعلم</p>
+              <p className="text-lg font-bold text-text-primary ltr truncate">
+                {user?.email ?? 'متعلم'}
+              </p>
               <p className="text-sm text-text-muted">
                 {currentLevel?.nameAr ?? '—'} · {currentLevel?.nameEn ?? '—'}
               </p>
@@ -400,8 +406,49 @@ export function ProfileScreen({ profile, onUpdateProfile, onResetOnboarding, onO
           ))}
         </div>
 
-        {/* Reset */}
+        {/* Logout */}
         <div className="pt-2">
+          {!confirmLogout ? (
+            <Button
+              variant="ghost"
+              fullWidth
+              icon={<LogOut size={18} className="rotate-180" />}
+              onClick={() => setConfirmLogout(true)}
+              className="text-text-secondary hover:text-text-primary hover:bg-white/5"
+            >
+              تسجيل الخروج
+            </Button>
+          ) : (
+            <Card className="p-4 animate-fade-up border-warning-500/30">
+              <p className="text-sm font-semibold text-text-primary mb-1">تسجيل الخروج؟</p>
+              <p className="text-2xs text-text-muted mb-3">
+                سيتم حفظ تقدّمك. يمكنك العودة بتسجيل الدخول مرة أخرى.
+              </p>
+              <div className="flex gap-2">
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  fullWidth
+                  onClick={() => setConfirmLogout(false)}
+                >
+                  إلغاء
+                </Button>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  fullWidth
+                  className="bg-warning-500 hover:bg-warning-400 shadow-none"
+                  onClick={() => { signOut(); setConfirmLogout(false); }}
+                >
+                  خروج
+                </Button>
+              </div>
+            </Card>
+          )}
+        </div>
+
+        {/* Reset */}
+        <div>
           {!confirmReset ? (
             <Button
               variant="ghost"
